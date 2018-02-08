@@ -1,0 +1,74 @@
+<?php
+/*
+Title: Question Type
+Post Type: question
+*/
+
+
+piklist('field', array(
+    'type' => 'select'
+    ,'required' => true
+    ,'scope' => 'taxonomy'
+    ,'field' => 'question_type'
+    ,'label' => 'Answer Type'
+    ,'description' => 'Choose what kind of answer is expected for this question'
+    ,'choices' => array(
+      '' => 'Choose Type'
+    )
+    + piklist(get_terms(array(
+      'taxonomy' => 'question_type'
+      ,'hide_empty' => false
+    ))
+    ,array(
+      'term_id'
+      ,'name'
+    )
+    )
+));
+
+
+    $selected_question_type = wp_get_post_terms( $post->ID, 'question_type', array("fields" => "slugs") );
+
+
+    if(in_array('text', $selected_question_type)) {
+        piklist('field', array(
+            'type' => 'text'
+            ,'field' => 'options_as_answer'
+            ,'label' => __('Text', 'piklist-demo')
+            ,'help' => __('You can easily add tooltips to your fields with the help parameter.', 'piklist-demo')
+            ,'attributes' => array(
+              'class' => 'regular-text'
+            )
+        ));
+    } elseif (in_array('textarea', $selected_question_type)) {
+        piklist('field', array(
+            'type' => 'editor'
+            ,'field' => 'options_as_answer'
+            ,'label' => __('Post Content', 'piklist-demo')
+            ,'options' => array(
+              'wpautop' => true
+            )
+            ,'on_post_status' => array(
+              'value' => 'lock'
+            )
+        ));
+    } elseif (in_array('checkbox', $selected_question_type)) {
+        piklist('field', array(
+            'type' => 'text'
+            ,'field' => 'options_as_answer'
+            ,'label' => __('Option(s) [Checkbox]', 'piklist-demo')
+            ,'add_more' => true
+            ,'value' => __('single', 'piklist-demo')
+        ));
+    }
+    elseif (in_array('radio', $selected_question_type)) {
+        piklist('field', array(
+            'type' => 'text'
+            ,'field' => 'options_as_answer'
+            ,'label' => __('Option(s) [Radio]', 'piklist-demo')
+            ,'add_more' => true
+            ,'value' => __('single', 'piklist-demo')
+        ));
+    } else {
+        echo "Sorry!";
+    }
