@@ -1,0 +1,15 @@
+<?php
+// Redefine Question and answer array in better way
+	$all_ques_ans_arr = array();
+	foreach ($extraQuestionArr as $ques_ans_string) {							// Get Question & Answer as string, seperatedby '='
+
+		$ques_ans_arr = explode('=', $ques_ans_string);							// store values of each Question and Answer into a array
+
+		if(array_key_exists("$ques_ans_arr[0]", $all_ques_ans_arr)){			// If any question is already store a option
+			array_push($all_ques_ans_arr[$ques_ans_arr[0]],$ques_ans_arr[1]);	// add new value in existing values
+		} else {
+			$all_ques_ans_arr[$ques_ans_arr[0]] = array( $ques_ans_arr[1] );	// Store Answer in a array
+		}
+	}
+	// Redefine Question and answer array in better way
+?>
